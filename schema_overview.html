@@ -15,22 +15,22 @@
     .nav-menu {
       background: #fff;
       box-shadow: 2px 0 8px rgba(44,62,80,0.07);
-      padding: 2em 1em 2em 1em;
+      padding: 1.2em 0.5em 1.2em 0.5em;
       position: fixed;
       left: 0;
       top: 0;
       bottom: 0;
-      width: 250px;
+      width: 200px;
       z-index: 100;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
     }
     .nav-title {
-      font-size: 1.2em;
+      font-size: 1em;
       font-weight: bold;
-      margin-bottom: 1.5em;
-      letter-spacing: 1px;
+      margin-bottom: 1em;
+      letter-spacing: 0.5px;
     }
     .nav-menu ul {
       list-style: none;
@@ -38,25 +38,26 @@
       margin: 0;
       display: flex;
       flex-direction: column;
-      gap: 0.5em;
+      gap: 0.2em;
       width: 100%;
     }
     .nav-menu a {
       text-decoration: none;
       color: #2c3e50;
       font-weight: 500;
-      padding: 0.8em 1em;
-      border-radius: 6px;
+      padding: 0.4em 0.7em;
+      border-radius: 4px;
       transition: background 0.2s;
       display: block;
+      font-size: 0.97em;
     }
     .nav-menu a:hover {
       background: #f4f6fb;
     }
     .main-content {
-      margin-left: 270px;
+      margin-left: 210px;
       padding: 2em;
-      width: calc(100% - 270px);
+      width: calc(100% - 210px);
       min-width: 0;
     }
     .section { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(44,62,80,0.07); margin: 2em auto; padding: 2em; max-width: 1600px; }
@@ -129,10 +130,24 @@
     <div class="nav-title">Menu</div>
     <ul>
       <li><a href="#banco-dados"><b>Banco de Dados</b></a>
-        <ul style="margin-left: 1em; margin-top: 0.5em;">
+        <ul>
           <li><a href="#estrutura">Estrutura do Banco de Dados</a></li>
           <li><a href="#permissoes">Visão Geral de Permissões</a></li>
           <li><a href="#erd">Diagrama de Relacionamento</a></li>
+          <li><a href="#detalhamento">Detalhamento do Banco de Dados</a>
+            <ul>
+              <li><a href="#detalhamento">Organização dos Schemas</a></li>
+              <li><a href="#detalhamento">Detalhamento das Tabelas</a>
+                <ul>
+                  <li><a href="#detalhamento">Schema: public</a></li>
+                  <li><a href="#detalhamento">Schema: storage</a></li>
+                  <li><a href="#detalhamento">Schema: outros</a></li>
+                </ul>
+              </li>
+              <li><a href="#detalhamento">Papéis de Usuário</a></li>
+              <li><a href="#detalhamento">Próximos Passos: Funções de Serviço e Permissões Potenciais</a></li>
+            </ul>
+          </li>
         </ul>
       </li>
     </ul>
@@ -180,6 +195,9 @@
 
       <h2 id="erd">Diagrama de Relacionamento entre Entidades (ERD)</h2>
       <p>O diagrama abaixo mostra como as diferentes tabelas do banco de dados se relacionam entre si.</p>
+      <div class="info-box">
+        <b>Dica:</b> Você pode dar <b>zoom</b> (rolando o mouse) e <b>arrastar</b> o diagrama para explorar as relações entre as tabelas. O movimento do mouse dentro do diagrama não irá rolar a página.
+      </div>
       <div class="svg-outer">
         <object id="erd-svg" type="image/svg+xml" data="database_schema.svg">Seu navegador não suporta SVG</object>
       </div>
@@ -197,69 +215,95 @@
         <li><b>realtime</b>: Mensageria em tempo real.</li>
         <li><b>vault</b>: Gerenciamento de segredos e informações sensíveis.</li>
       </ul>
-      <h2>Principais Tabelas e Relacionamentos</h2>
-      <p>O banco de dados possui diversas tabelas, cada uma com suas chaves primárias, estrangeiras e políticas de acesso. Exemplos:</p>
+      <h2>Detalhamento das Tabelas</h2>
+      <h3>Schema: public</h3>
       <ul>
-        <li><b>cidades</b>: Relacionada a <b>estados</b> (cada cidade pertence a um estado).</li>
-        <li><b>famílias</b>: Relacionada a <b>tendas</b> (cada família pertence a uma tenda).</li>
-        <li><b>missas</b>: Relacionada a <b>paróquias</b>.</li>
-        <li><b>paróquias</b>: Pode ser relacionada a cidades e estados.</li>
-        <li><b>padres</b>: Relacionado a perfis de usuário e paróquias.</li>
-        <li><b>tendas</b>: Relacionada a cidades, estados, etapas e paróquias.</li>
-        <li><b>perfis de usuário</b>: Relacionados a tendas e outros perfis (cônjuge).</li>
+        <li><b>cidades</b><br>
+          <b>Chave Primária:</b> id<br>
+          <b>Chave Estrangeira:</b> state_id → states(id)<br>
+          <b>Políticas RLS:</b> Acesso total para devAdmin e Founder; leitura para Guardião, usuários autenticados e visualizadores.
+        </li>
+        <li><b>famílias</b><br>
+          <b>Chave Primária:</b> id<br>
+          <b>Chave Estrangeira:</b> tenda_id → tendas(id)<br>
+          <b>Políticas RLS:</b> Acesso total para devAdmin e Founder; leitura para usuários autenticados e visualizadores.
+        </li>
+        <li><b>missas</b><br>
+          <b>Chave Primária:</b> id<br>
+          <b>Chave Estrangeira:</b> parish_id → parishes(id)<br>
+          <b>Políticas RLS:</b> Acesso total para devAdmin e Founder; leitura para usuários autenticados; inserção para autenticados.
+        </li>
+        <li><b>paróquias</b><br>
+          <b>Chave Primária:</b> id<br>
+          <b>Políticas RLS:</b> Acesso total para devAdmin e Founder; leitura para Guardião, usuários autenticados e visualizadores.
+        </li>
+        <li><b>padres</b><br>
+          <b>Chave Primária:</b> id<br>
+          <b>Chaves Estrangeiras:</b> profile_id → users_profiles(id), parish_id → parishes(id)<br>
+          <b>Políticas RLS:</b> Acesso total para devAdmin e Founder; leitura para usuários autenticados e visualizadores.
+        </li>
+        <li><b>tendas</b><br>
+          <b>Chave Primária:</b> id<br>
+          <b>Chaves Estrangeiras:</b> city_id → cities(id), state_id → states(id), stage_id → stages(id), parish_id → parishes(id)<br>
+          <b>Políticas RLS:</b> Acesso total para devAdmin e Founder; leitura para Guardião, usuários autenticados e visualizadores.
+        </li>
+        <li><b>perfis de usuário (users_profiles)</b><br>
+          <b>Chave Primária:</b> id<br>
+          <b>Chaves Estrangeiras:</b> tenda_id → tendas(id), spouse_id → users_profiles(id)<br>
+          <b>Políticas RLS:</b> Acesso total para devAdmin e Founder; leitura para Guardião, usuários autenticados e visualizadores; atualização pelo próprio usuário.
+        </li>
       </ul>
-      <h2>Políticas de Segurança (RLS)</h2>
-      <p>Todas as tabelas possuem <b>Row Level Security (RLS)</b> ativado. Isso significa que o acesso aos dados é controlado por políticas que determinam quem pode visualizar, inserir, atualizar ou excluir informações, de acordo com o papel do usuário.</p>
+      <h3>Schema: storage</h3>
       <ul>
-        <li><b>devAdmin</b> e <b>Founder</b>: Acesso total a todas as tabelas.</li>
-        <li><b>Guardião</b>: Acesso de leitura à maioria das tabelas, podendo gerenciar dados do seu grupo/tenda.</li>
-        <li><b>Usuário</b>: Pode visualizar dados relevantes e atualizar seu próprio perfil.</li>
-        <li><b>Visualizador</b>: Apenas leitura de dados públicos.</li>
+        <li><b>objects</b><br>
+          <b>Chave Primária:</b> id<br>
+          <b>Chave Estrangeira:</b> bucket_id → buckets(id)<br>
+          <b>Políticas RLS:</b> Qualquer pessoa pode inserir fotos de família; usuários autenticados podem visualizar; apenas devAdmin pode excluir ou atualizar.
+        </li>
       </ul>
-      <h2>Controle de Acesso Baseado em Papéis (RBAC)</h2>
-      <p>O sistema utiliza RBAC (Role-Based Access Control), onde cada usuário recebe um ou mais papéis que determinam suas permissões. Exemplos de papéis:</p>
+      <h3>Schema: outros</h3>
       <ul>
-        <li><b>devAdmin</b>: Administrador técnico, acesso total.</li>
-        <li><b>Founder</b>: Fundador, acesso total.</li>
-        <li><b>Guardião</b>: Líder de grupo/tenda.</li>
-        <li><b>Usuário</b>: Usuário autenticado comum.</li>
-        <li><b>Visualizador</b>: Apenas leitura.</li>
-        <li><b>admin</b>: Administrador geral, permissões intermediárias.</li>
+        <li><b>estados</b><br>
+          <b>Chave Primária:</b> id<br>
+          <b>Políticas RLS:</b> Acesso total para devAdmin; leitura para usuários autenticados.
+        </li>
+        <li><b>etapas (stages)</b><br>
+          <b>Chave Primária:</b> id<br>
+          <b>Políticas RLS:</b> Acesso total para devAdmin e Founder; leitura para Guardião, usuários autenticados e visualizadores.
+        </li>
+        <li><b>guardiões_tenda (tenda_guardioes)</b><br>
+          <b>Chave Primária:</b> id<br>
+          <b>Chaves Estrangeiras:</b> tenda_id → tendas(id), profile_id → users_profiles(id)<br>
+          <b>Políticas RLS:</b> Acesso total para devAdmin e Founder.
+        </li>
       </ul>
-      <h2>Funções de Serviço</h2>
-      <p>Além dos papéis principais, existem funções de serviço para gestão de equipes e atividades específicas, como:</p>
+      <h2>Papéis de Usuário</h2>
       <ul>
-        <li>Líder de Equipe Consagrados</li>
-        <li>Líder de Equipe Tsedaka</li>
-        <li>Líder de Equipe GAA</li>
-        <li>Líder de Equipe Berçário/Creche</li>
-        <li>Líder de Equipe Ventania</li>
-        <li>Treinador de Equipe de Trabalho</li>
-        <li>Padre Paroquial</li>
-        <li>Participante de Equipe</li>
+        <li><b>devAdmin</b>: Administrador técnico, com acesso total a todas as tabelas e configurações. Pode gerenciar usuários, papéis e configurações da plataforma. Pode contornar restrições RLS.</li>
+        <li><b>Founder</b>: Fundador ou super-administrador, com acesso total semelhante ao devAdmin, mas geralmente reservado para fundadores não técnicos.</li>
+        <li><b>Guardião</b>: Líder de grupo ou tenda. Tem acesso de leitura à maioria das tabelas e pode gerenciar dados do seu grupo/tenda.</li>
+        <li><b>Visualizador</b>: Usuário somente leitura. Pode visualizar dados públicos, mas não pode modificar nada.</li>
+        <li><b>Usuário</b>: Usuário autenticado comum. Pode visualizar dados relevantes e atualizar seu próprio perfil, mas não pode modificar dados de outros usuários.</li>
+        <li><b>admin</b>: Administrador geral, com permissões intermediárias. Pode gerenciar alguns dados e usuários, dependendo das políticas RLS.</li>
+        <li><b>service_role</b>: Papéis especiais para operações de serviço, como líderes de equipe.</li>
       </ul>
-      <h2>Como as Permissões São Aplicadas</h2>
-      <p>As permissões são aplicadas principalmente via RLS, garantindo que cada usuário só acesse o que lhe é permitido. Funções de serviço permitem uma gestão mais granular, especialmente para líderes de equipe e responsáveis por grupos.</p>
-      <h2>Exemplo de Mapeamento de Permissões</h2>
-      <table>
-        <tr><th>Papel</th><th>Leitura</th><th>Inserção</th><th>Atualização</th><th>Exclusão</th><th>Gerenciar Usuários</th><th>Gerenciar Configurações</th></tr>
-        <tr><td>devAdmin</td><td>✔️</td><td>✔️</td><td>✔️</td><td>✔️</td><td>✔️</td><td>✔️</td></tr>
-        <tr><td>Founder</td><td>✔️</td><td>✔️</td><td>✔️</td><td>✔️</td><td>✔️</td><td>✔️</td></tr>
-        <tr><td>Guardião</td><td>✔️</td><td>(alguns)</td><td>(alguns)</td><td>(não)</td><td>(não)</td><td>(não)</td></tr>
-        <tr><td>Visualizador</td><td>✔️</td><td>(não)</td><td>(não)</td><td>(não)</td><td>(não)</td><td>(não)</td></tr>
-        <tr><td>Usuário</td><td>✔️</td><td>(próprio)</td><td>(próprio)</td><td>(não)</td><td>(não)</td><td>(não)</td></tr>
-        <tr><td>admin</td><td>✔️</td><td>✔️</td><td>✔️</td><td>✔️</td><td>(alguns)</td><td>(alguns)</td></tr>
-      </table>
-      <p><i>(próprio): Apenas para seus próprios dados<br>(alguns): Apenas para dados dos quais são responsáveis (ex: sua tenda ou equipe)</i></p>
-      <h2>Notas e Recomendações</h2>
+      <h2>Próximos Passos: Funções de Serviço e Permissões Potenciais</h2>
+      <p>Para tornar o controle de acesso ainda mais flexível e detalhado, recomenda-se integrar as funções de serviço (como líderes de equipe) às políticas de segurança (RLS). Isso permitirá que líderes e participantes de equipes tenham permissões específicas para gerenciar e visualizar dados relacionados à sua equipe ou área de atuação.</p>
       <ul>
-        <li>Todas as tabelas do schema <b>auth</b> são gerenciadas pelo Supabase Auth.</li>
-        <li>O schema <b>storage</b> é usado para arquivos e imagens, com políticas específicas para fotos de família.</li>
-        <li>O schema <b>realtime</b> gerencia funcionalidades de mensagens em tempo real.</li>
-        <li>O schema <b>vault</b> é utilizado para informações sensíveis e segredos.</li>
+        <li><b>Líder de Equipe Consagrados</b>: Gerenciar e visualizar dados da equipe Consagrados; aprovar ou atualizar informações dos membros.</li>
+        <li><b>Líder de Equipe Tsedaka</b>: Gerenciar e visualizar dados da equipe Tsedaka; aprovar ou atualizar informações dos membros.</li>
+        <li><b>Padre Paroquial</b>: Visualizar e gerenciar dados da paróquia; supervisionar eventos e membros paroquiais.</li>
+        <li><b>Fundador</b>: Permissões em toda a plataforma, semelhante ao super-admin; supervisionar todas as equipes e dados.</li>
+        <li><b>Participante de Equipe Berçário/Creche</b>: Visualizar e participar das atividades da equipe Berçário/Creche; permissões limitadas de edição.</li>
+        <li><b>Participante de Equipe Ventania</b>: Visualizar e participar das atividades da equipe Ventania; permissões limitadas de edição.</li>
+        <li><b>Líder de Equipe Berçário/Creche</b>: Gerenciar e visualizar dados da equipe Berçário/Creche; aprovar ou atualizar informações dos membros.</li>
+        <li><b>Líder de Equipe GAA</b>: Gerenciar e visualizar dados da equipe GAA; aprovar ou atualizar informações dos membros.</li>
+        <li><b>Guardião</b>: Supervisionar e gerenciar um grupo ou tenda; visualizar e atualizar dados do grupo.</li>
+        <li><b>Cofundador</b>: Permissões em toda a plataforma, semelhante ao Fundador; supervisionar todas as equipes e dados.</li>
+        <li><b>Padre</b>: Visualizar e gerenciar dados de paroquianos e eventos, limitado ao escopo da paróquia.</li>
+        <li><b>Participante de Equipe de Trabalho</b>: Visualizar e participar das atividades da Equipe de Trabalho; permissões limitadas de edição.</li>
+        <li><b>Treinador de Equipe de Trabalho</b>: Gerenciar e visualizar dados da Equipe de Trabalho; supervisionar treinamentos e desenvolvimento da equipe.</li>
       </ul>
-      <h2>Próximos Passos: Integração de Funções de Serviço</h2>
-      <p>Recomenda-se analisar e integrar as funções de serviço (como líderes de equipe) nas políticas de segurança (RLS), permitindo um controle de acesso ainda mais detalhado e flexível para cada equipe ou grupo.</p>
     </div>
   </div>
 
@@ -277,13 +321,19 @@
         minZoom: 0.5,
         maxZoom: 10
       });
-      document.getElementById('zoom-in').onclick = function() { panZoom.zoomIn(); };
-      document.getElementById('zoom-out').onclick = function() { panZoom.zoomOut(); };
-      document.getElementById('reset').onclick = function() { panZoom.resetZoom(); panZoom.center(); };
-      // Prevent page scroll when using mouse wheel inside SVG
+      // Prevent page scroll when using mouse wheel or dragging inside SVG
       svgElem.addEventListener('wheel', function(e) {
         e.preventDefault();
       }, { passive: false });
+      svgElem.addEventListener('mousedown', function(e) {
+        e.stopPropagation();
+      });
+      svgElem.addEventListener('mousemove', function(e) {
+        e.stopPropagation();
+      });
+      svgElem.addEventListener('mouseup', function(e) {
+        e.stopPropagation();
+      });
     });
   </script>
 
