@@ -15,21 +15,21 @@
     .nav-menu {
       background: #fff;
       box-shadow: 2px 0 8px rgba(44,62,80,0.07);
-      padding: 1.2em 0.5em 1.2em 0.5em;
+      padding: 0.7em 0.3em 0.7em 0.3em;
       position: fixed;
       left: 0;
       top: 0;
       bottom: 0;
-      width: 200px;
+      width: 180px;
       z-index: 100;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
     }
     .nav-title {
-      font-size: 1em;
+      font-size: 0.98em;
       font-weight: bold;
-      margin-bottom: 1em;
+      margin-bottom: 0.7em;
       letter-spacing: 0.5px;
     }
     .nav-menu ul {
@@ -38,26 +38,47 @@
       margin: 0;
       display: flex;
       flex-direction: column;
-      gap: 0.2em;
+      gap: 0.08em;
       width: 100%;
+    }
+    .nav-menu li {
+      margin: 0;
+      padding: 0;
+    }
+    .nav-menu > ul > li > a {
+      font-size: 0.98em;
+      font-weight: bold;
+      margin-bottom: 0.1em;
+    }
+    .nav-menu ul ul {
+      margin-left: 1em;
+    }
+    .nav-menu ul ul li a {
+      font-size: 0.93em;
+      font-weight: 500;
+    }
+    .nav-menu ul ul ul {
+      margin-left: 0.7em;
+    }
+    .nav-menu ul ul ul li a {
+      font-size: 0.91em;
+      font-weight: 400;
     }
     .nav-menu a {
       text-decoration: none;
       color: #2c3e50;
-      font-weight: 500;
-      padding: 0.4em 0.7em;
+      padding: 0.25em 0.5em;
       border-radius: 4px;
       transition: background 0.2s;
       display: block;
-      font-size: 0.97em;
     }
     .nav-menu a:hover {
       background: #f4f6fb;
     }
     .main-content {
-      margin-left: 210px;
+      margin-left: 190px;
       padding: 2em;
-      width: calc(100% - 210px);
+      width: calc(100% - 190px);
       min-width: 0;
     }
     .section { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(44,62,80,0.07); margin: 2em auto; padding: 2em; max-width: 1600px; }
@@ -121,6 +142,23 @@
       .section, .svg-container { max-width: 98vw; padding: 1em; }
       object#erd-svg { width: 98vw !important; max-width: 98vw; }
       .zoom-toolbar { right: 10px; }
+    }
+    /* Table details bullets styling */
+    .table-details-list {
+      list-style: disc inside;
+      padding-left: 0.5em;
+      margin-bottom: 1.2em;
+    }
+    .table-details-list > li {
+      margin-bottom: 0.7em;
+    }
+    .table-details-info {
+      margin-left: 1.2em;
+      font-size: 0.97em;
+      color: #222;
+      border-left: 2px solid #e3e8f0;
+      padding-left: 0.7em;
+      margin-top: 0.2em;
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
@@ -217,64 +255,86 @@
       </ul>
       <h2>Detalhamento das Tabelas</h2>
       <h3>Schema: public</h3>
-      <ul>
-        <li><b>cidades</b><br>
-          <b>Chave Primária:</b> id<br>
-          <b>Chave Estrangeira:</b> state_id → states(id)<br>
-          <b>Políticas RLS:</b> Acesso total para devAdmin e Founder; leitura para Guardião, usuários autenticados e visualizadores.
+      <ul class="table-details-list">
+        <li><b>cidades</b>
+          <div class="table-details-info">
+            <b>Chave Primária:</b> id<br>
+            <b>Chave Estrangeira:</b> state_id → states(id)<br>
+            <b>Políticas RLS:</b> Acesso total para devAdmin e Founder; leitura para Guardião, usuários autenticados e visualizadores.
+          </div>
         </li>
-        <li><b>famílias</b><br>
-          <b>Chave Primária:</b> id<br>
-          <b>Chave Estrangeira:</b> tenda_id → tendas(id)<br>
-          <b>Políticas RLS:</b> Acesso total para devAdmin e Founder; leitura para usuários autenticados e visualizadores.
+        <li><b>famílias</b>
+          <div class="table-details-info">
+            <b>Chave Primária:</b> id<br>
+            <b>Chave Estrangeira:</b> tenda_id → tendas(id)<br>
+            <b>Políticas RLS:</b> Acesso total para devAdmin e Founder; leitura para usuários autenticados e visualizadores.
+          </div>
         </li>
-        <li><b>missas</b><br>
-          <b>Chave Primária:</b> id<br>
-          <b>Chave Estrangeira:</b> parish_id → parishes(id)<br>
-          <b>Políticas RLS:</b> Acesso total para devAdmin e Founder; leitura para usuários autenticados; inserção para autenticados.
+        <li><b>missas</b>
+          <div class="table-details-info">
+            <b>Chave Primária:</b> id<br>
+            <b>Chave Estrangeira:</b> parish_id → parishes(id)<br>
+            <b>Políticas RLS:</b> Acesso total para devAdmin e Founder; leitura para usuários autenticados; inserção para autenticados.
+          </div>
         </li>
-        <li><b>paróquias</b><br>
-          <b>Chave Primária:</b> id<br>
-          <b>Políticas RLS:</b> Acesso total para devAdmin e Founder; leitura para Guardião, usuários autenticados e visualizadores.
+        <li><b>paróquias</b>
+          <div class="table-details-info">
+            <b>Chave Primária:</b> id<br>
+            <b>Políticas RLS:</b> Acesso total para devAdmin e Founder; leitura para Guardião, usuários autenticados e visualizadores.
+          </div>
         </li>
-        <li><b>padres</b><br>
-          <b>Chave Primária:</b> id<br>
-          <b>Chaves Estrangeiras:</b> profile_id → users_profiles(id), parish_id → parishes(id)<br>
-          <b>Políticas RLS:</b> Acesso total para devAdmin e Founder; leitura para usuários autenticados e visualizadores.
+        <li><b>padres</b>
+          <div class="table-details-info">
+            <b>Chave Primária:</b> id<br>
+            <b>Chaves Estrangeiras:</b> profile_id → users_profiles(id), parish_id → parishes(id)<br>
+            <b>Políticas RLS:</b> Acesso total para devAdmin e Founder; leitura para usuários autenticados e visualizadores.
+          </div>
         </li>
-        <li><b>tendas</b><br>
-          <b>Chave Primária:</b> id<br>
-          <b>Chaves Estrangeiras:</b> city_id → cities(id), state_id → states(id), stage_id → stages(id), parish_id → parishes(id)<br>
-          <b>Políticas RLS:</b> Acesso total para devAdmin e Founder; leitura para Guardião, usuários autenticados e visualizadores.
+        <li><b>tendas</b>
+          <div class="table-details-info">
+            <b>Chave Primária:</b> id<br>
+            <b>Chaves Estrangeiras:</b> city_id → cities(id), state_id → states(id), stage_id → stages(id), parish_id → parishes(id)<br>
+            <b>Políticas RLS:</b> Acesso total para devAdmin e Founder; leitura para Guardião, usuários autenticados e visualizadores.
+          </div>
         </li>
-        <li><b>perfis de usuário (users_profiles)</b><br>
-          <b>Chave Primária:</b> id<br>
-          <b>Chaves Estrangeiras:</b> tenda_id → tendas(id), spouse_id → users_profiles(id)<br>
-          <b>Políticas RLS:</b> Acesso total para devAdmin e Founder; leitura para Guardião, usuários autenticados e visualizadores; atualização pelo próprio usuário.
+        <li><b>perfis de usuário (users_profiles)</b>
+          <div class="table-details-info">
+            <b>Chave Primária:</b> id<br>
+            <b>Chaves Estrangeiras:</b> tenda_id → tendas(id), spouse_id → users_profiles(id)<br>
+            <b>Políticas RLS:</b> Acesso total para devAdmin e Founder; leitura para Guardião, usuários autenticados e visualizadores; atualização pelo próprio usuário.
+          </div>
         </li>
       </ul>
       <h3>Schema: storage</h3>
-      <ul>
-        <li><b>objects</b><br>
-          <b>Chave Primária:</b> id<br>
-          <b>Chave Estrangeira:</b> bucket_id → buckets(id)<br>
-          <b>Políticas RLS:</b> Qualquer pessoa pode inserir fotos de família; usuários autenticados podem visualizar; apenas devAdmin pode excluir ou atualizar.
+      <ul class="table-details-list">
+        <li><b>objects</b>
+          <div class="table-details-info">
+            <b>Chave Primária:</b> id<br>
+            <b>Chave Estrangeira:</b> bucket_id → buckets(id)<br>
+            <b>Políticas RLS:</b> Qualquer pessoa pode inserir fotos de família; usuários autenticados podem visualizar; apenas devAdmin pode excluir ou atualizar.
+          </div>
         </li>
       </ul>
       <h3>Schema: outros</h3>
-      <ul>
-        <li><b>estados</b><br>
-          <b>Chave Primária:</b> id<br>
-          <b>Políticas RLS:</b> Acesso total para devAdmin; leitura para usuários autenticados.
+      <ul class="table-details-list">
+        <li><b>estados</b>
+          <div class="table-details-info">
+            <b>Chave Primária:</b> id<br>
+            <b>Políticas RLS:</b> Acesso total para devAdmin; leitura para usuários autenticados.
+          </div>
         </li>
-        <li><b>etapas (stages)</b><br>
-          <b>Chave Primária:</b> id<br>
-          <b>Políticas RLS:</b> Acesso total para devAdmin e Founder; leitura para Guardião, usuários autenticados e visualizadores.
+        <li><b>etapas (stages)</b>
+          <div class="table-details-info">
+            <b>Chave Primária:</b> id<br>
+            <b>Políticas RLS:</b> Acesso total para devAdmin e Founder; leitura para Guardião, usuários autenticados e visualizadores.
+          </div>
         </li>
-        <li><b>guardiões_tenda (tenda_guardioes)</b><br>
-          <b>Chave Primária:</b> id<br>
-          <b>Chaves Estrangeiras:</b> tenda_id → tendas(id), profile_id → users_profiles(id)<br>
-          <b>Políticas RLS:</b> Acesso total para devAdmin e Founder.
+        <li><b>guardiões_tenda (tenda_guardioes)</b>
+          <div class="table-details-info">
+            <b>Chave Primária:</b> id<br>
+            <b>Chaves Estrangeiras:</b> tenda_id → tendas(id), profile_id → users_profiles(id)<br>
+            <b>Políticas RLS:</b> Acesso total para devAdmin e Founder.
+          </div>
         </li>
       </ul>
       <h2>Papéis de Usuário</h2>
