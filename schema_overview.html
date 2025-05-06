@@ -136,6 +136,10 @@
       document.getElementById('zoom-in').onclick = function() { panZoom.zoomIn(); };
       document.getElementById('zoom-out').onclick = function() { panZoom.zoomOut(); };
       document.getElementById('reset').onclick = function() { panZoom.resetZoom(); panZoom.center(); };
+      // Prevent page scroll when using mouse wheel inside SVG
+      svgElem.addEventListener('wheel', function(e) {
+        e.preventDefault();
+      }, { passive: false });
     });
   </script>
 
