@@ -15,13 +15,22 @@
     .nav-menu {
       background: #fff;
       box-shadow: 2px 0 8px rgba(44,62,80,0.07);
-      padding: 2em 1em;
+      padding: 2em 1em 2em 1em;
       position: fixed;
       left: 0;
       top: 0;
       bottom: 0;
       width: 250px;
       z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .nav-title {
+      font-size: 1.2em;
+      font-weight: bold;
+      margin-bottom: 1.5em;
+      letter-spacing: 1px;
     }
     .nav-menu ul {
       list-style: none;
@@ -30,6 +39,7 @@
       display: flex;
       flex-direction: column;
       gap: 0.5em;
+      width: 100%;
     }
     .nav-menu a {
       text-decoration: none;
@@ -44,9 +54,10 @@
       background: #f4f6fb;
     }
     .main-content {
-      margin-left: 250px;
+      margin-left: 270px;
       padding: 2em;
-      width: calc(100% - 250px);
+      width: calc(100% - 270px);
+      min-width: 0;
     }
     .section { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(44,62,80,0.07); margin: 2em auto; padding: 2em; max-width: 1600px; }
     table { border-collapse: separate; border-spacing: 0; width: 100%; margin-bottom: 2em; background: #fafbfc; border-radius: 8px; overflow: hidden; }
@@ -115,8 +126,12 @@
 </head>
 <body>
   <nav class="nav-menu">
+    <div class="nav-title">Menu</div>
     <ul>
       <li><a href="#banco-dados">Banco de Dados</a></li>
+      <li><a href="#estrutura">Estrutura do Banco de Dados</a></li>
+      <li><a href="#permissoes">Visão Geral de Permissões</a></li>
+      <li><a href="#erd">Diagrama de Relacionamento</a></li>
     </ul>
   </nav>
 
@@ -128,7 +143,7 @@
         <p>O banco de dados da Plataforma Tenda é projetado para armazenar e gerenciar todas as informações necessárias para o funcionamento do sistema. Abaixo, você encontrará uma explicação detalhada de como os dados são organizados e estruturados.</p>
       </div>
 
-      <h2>Estrutura do Banco de Dados</h2>
+      <h2 id="estrutura">Estrutura do Banco de Dados</h2>
       <p>A plataforma utiliza várias tabelas interligadas para armazenar diferentes tipos de informações. Aqui está uma visão geral das principais tabelas:</p>
       <ul>
         <li><b>cidades</b>: Armazena informações sobre as cidades, conectadas aos estados.</li>
@@ -147,7 +162,7 @@
         <li><b>funções_serviço_usuários</b>: Mapeamento entre usuários e funções de serviço.</li>
       </ul>
 
-      <h2>Visão Geral de Permissões</h2>
+      <h2 id="permissoes">Visão Geral de Permissões</h2>
       <p>O sistema possui diferentes níveis de acesso para garantir a segurança e organização dos dados. Cada função tem permissões específicas:</p>
       <table>
         <tr><th>Função</th><th>Leitura</th><th>Inserção</th><th>Atualização</th><th>Exclusão</th><th>Gerenciar Usuários</th><th>Gerenciar Configurações</th></tr>
@@ -160,20 +175,9 @@
       </table>
       <p><i>(próprio): Apenas para seus próprios dados<br>(parcial): Apenas para dados dos quais são responsáveis (ex: sua tenda ou equipe)</i></p>
 
-      <h2>Diagrama de Relacionamento entre Entidades (ERD)</h2>
-      <p>O diagrama abaixo mostra como as diferentes tabelas do banco de dados se relacionam entre si. Você pode usar os botões de zoom para explorar melhor o diagrama.</p>
+      <h2 id="erd">Diagrama de Relacionamento entre Entidades (ERD)</h2>
+      <p>O diagrama abaixo mostra como as diferentes tabelas do banco de dados se relacionam entre si.</p>
       <div class="svg-outer">
-        <div class="zoom-toolbar">
-          <button class="zoom-btn" id="zoom-in" title="Aumentar zoom">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none"/><path d="M12 8v8M8 12h8" stroke="#2c3e50" stroke-width="2" stroke-linecap="round"/></svg>
-          </button>
-          <button class="zoom-btn" id="zoom-out" title="Diminuir zoom">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none"/><path d="M8 12h8" stroke="#2c3e50" stroke-width="2" stroke-linecap="round"/></svg>
-          </button>
-          <button class="zoom-btn" id="reset" title="Resetar zoom">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none"/><path d="M16 8v-4h-4" stroke="#2c3e50" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M8 16a6 6 0 1 1 8-8" stroke="#2c3e50" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
-          </button>
-        </div>
         <object id="erd-svg" type="image/svg+xml" data="database_schema.svg">Seu navegador não suporta SVG</object>
       </div>
     </div>
