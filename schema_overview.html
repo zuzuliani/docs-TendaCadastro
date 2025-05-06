@@ -184,6 +184,83 @@
         <object id="erd-svg" type="image/svg+xml" data="database_schema.svg">Seu navegador não suporta SVG</object>
       </div>
     </div>
+    <div class="section" id="detalhamento">
+      <h1>Detalhamento do Banco de Dados</h1>
+      <div class="info-box">
+        <p>Esta seção apresenta uma visão detalhada da estrutura do banco de dados, incluindo tabelas, políticas de segurança (RLS), papéis de usuário e permissões. O objetivo é explicar de forma clara como os dados são organizados, protegidos e acessados na plataforma.</p>
+      </div>
+      <h2>Organização dos Schemas</h2>
+      <ul>
+        <li><b>auth</b>: Gerenciamento de autenticação e usuários.</li>
+        <li><b>public</b>: Dados principais da aplicação.</li>
+        <li><b>storage</b>: Gerenciamento de arquivos e imagens.</li>
+        <li><b>realtime</b>: Mensageria em tempo real.</li>
+        <li><b>vault</b>: Gerenciamento de segredos e informações sensíveis.</li>
+      </ul>
+      <h2>Principais Tabelas e Relacionamentos</h2>
+      <p>O banco de dados possui diversas tabelas, cada uma com suas chaves primárias, estrangeiras e políticas de acesso. Exemplos:</p>
+      <ul>
+        <li><b>cidades</b>: Relacionada a <b>estados</b> (cada cidade pertence a um estado).</li>
+        <li><b>famílias</b>: Relacionada a <b>tendas</b> (cada família pertence a uma tenda).</li>
+        <li><b>missas</b>: Relacionada a <b>paróquias</b>.</li>
+        <li><b>paróquias</b>: Pode ser relacionada a cidades e estados.</li>
+        <li><b>padres</b>: Relacionado a perfis de usuário e paróquias.</li>
+        <li><b>tendas</b>: Relacionada a cidades, estados, etapas e paróquias.</li>
+        <li><b>perfis de usuário</b>: Relacionados a tendas e outros perfis (cônjuge).</li>
+      </ul>
+      <h2>Políticas de Segurança (RLS)</h2>
+      <p>Todas as tabelas possuem <b>Row Level Security (RLS)</b> ativado. Isso significa que o acesso aos dados é controlado por políticas que determinam quem pode visualizar, inserir, atualizar ou excluir informações, de acordo com o papel do usuário.</p>
+      <ul>
+        <li><b>devAdmin</b> e <b>Founder</b>: Acesso total a todas as tabelas.</li>
+        <li><b>Guardião</b>: Acesso de leitura à maioria das tabelas, podendo gerenciar dados do seu grupo/tenda.</li>
+        <li><b>Usuário</b>: Pode visualizar dados relevantes e atualizar seu próprio perfil.</li>
+        <li><b>Visualizador</b>: Apenas leitura de dados públicos.</li>
+      </ul>
+      <h2>Controle de Acesso Baseado em Papéis (RBAC)</h2>
+      <p>O sistema utiliza RBAC (Role-Based Access Control), onde cada usuário recebe um ou mais papéis que determinam suas permissões. Exemplos de papéis:</p>
+      <ul>
+        <li><b>devAdmin</b>: Administrador técnico, acesso total.</li>
+        <li><b>Founder</b>: Fundador, acesso total.</li>
+        <li><b>Guardião</b>: Líder de grupo/tenda.</li>
+        <li><b>Usuário</b>: Usuário autenticado comum.</li>
+        <li><b>Visualizador</b>: Apenas leitura.</li>
+        <li><b>admin</b>: Administrador geral, permissões intermediárias.</li>
+      </ul>
+      <h2>Funções de Serviço</h2>
+      <p>Além dos papéis principais, existem funções de serviço para gestão de equipes e atividades específicas, como:</p>
+      <ul>
+        <li>Líder de Equipe Consagrados</li>
+        <li>Líder de Equipe Tsedaka</li>
+        <li>Líder de Equipe GAA</li>
+        <li>Líder de Equipe Berçário/Creche</li>
+        <li>Líder de Equipe Ventania</li>
+        <li>Treinador de Equipe de Trabalho</li>
+        <li>Padre Paroquial</li>
+        <li>Participante de Equipe</li>
+      </ul>
+      <h2>Como as Permissões São Aplicadas</h2>
+      <p>As permissões são aplicadas principalmente via RLS, garantindo que cada usuário só acesse o que lhe é permitido. Funções de serviço permitem uma gestão mais granular, especialmente para líderes de equipe e responsáveis por grupos.</p>
+      <h2>Exemplo de Mapeamento de Permissões</h2>
+      <table>
+        <tr><th>Papel</th><th>Leitura</th><th>Inserção</th><th>Atualização</th><th>Exclusão</th><th>Gerenciar Usuários</th><th>Gerenciar Configurações</th></tr>
+        <tr><td>devAdmin</td><td>✔️</td><td>✔️</td><td>✔️</td><td>✔️</td><td>✔️</td><td>✔️</td></tr>
+        <tr><td>Founder</td><td>✔️</td><td>✔️</td><td>✔️</td><td>✔️</td><td>✔️</td><td>✔️</td></tr>
+        <tr><td>Guardião</td><td>✔️</td><td>(alguns)</td><td>(alguns)</td><td>(não)</td><td>(não)</td><td>(não)</td></tr>
+        <tr><td>Visualizador</td><td>✔️</td><td>(não)</td><td>(não)</td><td>(não)</td><td>(não)</td><td>(não)</td></tr>
+        <tr><td>Usuário</td><td>✔️</td><td>(próprio)</td><td>(próprio)</td><td>(não)</td><td>(não)</td><td>(não)</td></tr>
+        <tr><td>admin</td><td>✔️</td><td>✔️</td><td>✔️</td><td>✔️</td><td>(alguns)</td><td>(alguns)</td></tr>
+      </table>
+      <p><i>(próprio): Apenas para seus próprios dados<br>(alguns): Apenas para dados dos quais são responsáveis (ex: sua tenda ou equipe)</i></p>
+      <h2>Notas e Recomendações</h2>
+      <ul>
+        <li>Todas as tabelas do schema <b>auth</b> são gerenciadas pelo Supabase Auth.</li>
+        <li>O schema <b>storage</b> é usado para arquivos e imagens, com políticas específicas para fotos de família.</li>
+        <li>O schema <b>realtime</b> gerencia funcionalidades de mensagens em tempo real.</li>
+        <li>O schema <b>vault</b> é utilizado para informações sensíveis e segredos.</li>
+      </ul>
+      <h2>Próximos Passos: Integração de Funções de Serviço</h2>
+      <p>Recomenda-se analisar e integrar as funções de serviço (como líderes de equipe) nas políticas de segurança (RLS), permitindo um controle de acesso ainda mais detalhado e flexível para cada equipe ou grupo.</p>
+    </div>
   </div>
 
   <script>
