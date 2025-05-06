@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Database Schema Overview</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background: #f9f9f9; }
+    h1, h2, h3 { color: #2c3e50; }
+    .section { margin-bottom: 2em; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 2em; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background: #eaeaea; }
+    .svg-container { text-align: center; margin: 2em 0; }
+  </style>
+</head>
+<body>
+  <h1>Database Schema Overview</h1>
+
+  <div class="section">
+    <h2>Schema Structure</h2>
+    <ul>
+      <li><b>cities</b>: Stores city information, links to <i>states</i>.</li>
+      <li><b>families</b>: Family records, linked to <i>tendas</i>.</li>
+      <li><b>masses</b>: Mass events, linked to <i>parishes</i>.</li>
+      <li><b>parishes</b>: Parish information, links to <i>cities</i> and <i>states</i>.</li>
+      <li><b>priests</b>: Priests, linked to <i>users_profiles</i> and <i>parishes</i>.</li>
+      <li><b>roles</b>: User roles (devAdmin, Founder, Guardião, etc.).</li>
+      <li><b>service_roles</b>: Team/service roles (Líder, Participante, etc.).</li>
+      <li><b>stages</b>: Event or tenda stages.</li>
+      <li><b>states</b>: State information.</li>
+      <li><b>system_variables</b>: Platform configuration.</li>
+      <li><b>tenda_guardioes</b>: Tenda guardians, links to <i>tendas</i> and <i>users_profiles</i>.</li>
+      <li><b>tendas</b>: Tenda (group) records, links to <i>cities</i>, <i>states</i>, <i>stages</i>, <i>parishes</i>.</li>
+      <li><b>users_profiles</b>: User profiles, links to <i>tendas</i> and <i>users_profiles</i> (spouse).</li>
+      <li><b>users_service_roles</b>: User-to-service-role mapping.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Permissions Overview</h2>
+    <table>
+      <tr><th>Role</th><th>Read</th><th>Insert</th><th>Update</th><th>Delete</th><th>Manage Users</th><th>Manage Settings</th></tr>
+      <tr><td>devAdmin</td><td>✔️</td><td>✔️</td><td>✔️</td><td>✔️</td><td>✔️</td><td>✔️</td></tr>
+      <tr><td>Founder</td><td>✔️</td><td>✔️</td><td>✔️</td><td>✔️</td><td>✔️</td><td>✔️</td></tr>
+      <tr><td>Guardião</td><td>✔️</td><td>(some)</td><td>(some)</td><td>(no)</td><td>(no)</td><td>(no)</td></tr>
+      <tr><td>Viewer</td><td>✔️</td><td>(no)</td><td>(no)</td><td>(no)</td><td>(no)</td><td>(no)</td></tr>
+      <tr><td>User</td><td>✔️</td><td>(self)</td><td>(self)</td><td>(no)</td><td>(no)</td><td>(no)</td></tr>
+      <tr><td>admin</td><td>✔️</td><td>✔️</td><td>✔️</td><td>✔️</td><td>(some)</td><td>(some)</td></tr>
+    </table>
+    <p><i>(self): Only for their own data<br>(some): Only for data they are responsible for (e.g., their tenda or team)</i></p>
+  </div>
+
+  <div class="section">
+    <h2>Entity Relationship Diagram (ERD)</h2>
+    <div class="svg-container">
+      <object type="image/svg+xml" data="../database_schema.svg" width="900" style="border:1px solid #ccc; background:#fff;">Your browser does not support SVG</object>
+    </div>
+  </div>
+
+</body>
+</html> 
