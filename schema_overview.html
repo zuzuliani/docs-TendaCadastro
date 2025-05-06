@@ -6,20 +6,22 @@
   <style>
     body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: #f4f6fb; color: #2c3e50; }
     h1, h2, h3 { color: #1a2533; }
-    .section { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(44,62,80,0.07); margin: 2em auto; padding: 2em; max-width: 900px; }
+    .section { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(44,62,80,0.07); margin: 2em auto; padding: 2em; max-width: 1600px; }
     table { border-collapse: separate; border-spacing: 0; width: 100%; margin-bottom: 2em; background: #fafbfc; border-radius: 8px; overflow: hidden; }
     th, td { border: none; padding: 12px 10px; text-align: left; }
     th { background: #e3e8f0; font-weight: 600; }
     tr:nth-child(even) { background: #f4f6fb; }
     tr:hover { background: #eaf1fb; }
     td { border-bottom: 1px solid #e3e8f0; }
-    .svg-container { text-align: center; margin: 2em 0; background: #fff; border-radius: 10px; box-shadow: 0 1px 4px rgba(44,62,80,0.05); padding: 1em; position: relative; }
+    .svg-container { text-align: center; margin: 2em auto; background: #fff; border-radius: 10px; box-shadow: 0 1px 4px rgba(44,62,80,0.05); padding: 1.5em; position: relative; max-width: 1600px; }
     .zoom-toolbar { display: flex; justify-content: center; gap: 10px; margin-bottom: 1em; }
     .zoom-btn { background: #e3e8f0; border: none; border-radius: 5px; padding: 8px 14px; font-size: 1.1em; cursor: pointer; transition: background 0.2s; }
     .zoom-btn:hover { background: #cfd8e3; }
-    @media (max-width: 1000px) {
+    .svg-outer { width: 100%; display: flex; justify-content: center; }
+    object#erd-svg { width: 100%; max-width: 1500px; min-width: 600px; height: 800px; min-height: 400px; border:1px solid #ccc; background:#fff; border-radius:8px; }
+    @media (max-width: 1700px) {
       .section, .svg-container { max-width: 98vw; padding: 1em; }
-      object { width: 98vw !important; }
+      object#erd-svg { width: 98vw !important; max-width: 98vw; }
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
@@ -63,13 +65,13 @@
 
   <div class="section">
     <h2>Entity Relationship Diagram (ERD)</h2>
-    <div class="svg-container">
+    <div class="svg-outer">
       <div class="zoom-toolbar">
         <button class="zoom-btn" id="zoom-in">＋</button>
         <button class="zoom-btn" id="zoom-out">－</button>
         <button class="zoom-btn" id="reset">⟳</button>
       </div>
-      <object id="erd-svg" type="image/svg+xml" data="database_schema.svg" width="900" style="border:1px solid #ccc; background:#fff; border-radius:8px;">Your browser does not support SVG</object>
+      <object id="erd-svg" type="image/svg+xml" data="database_schema.svg">Your browser does not support SVG</object>
     </div>
   </div>
 
